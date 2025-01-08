@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>datavzrd report</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<script src="../static/bundle.js"></script>
+<div class="collapse" id="sidebar">
+    <div class="card" id="sidebar-card">
+        <ul class="list-group list-group-flush" id="sidebar-list">
+            <li class="list-group-item sidebar-btn" id="btnExcel" onclick="window.location='../data.xlsx'">Download excel sheet</li>
+            <li class="list-group-item sidebar-btn" id="markdown-btn" type="button" data-toggle="collapse" data-target="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">Show description</li>
+        </ul>
+    </div>
+</div>
+
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="fixed-top">
+            <nav class="navbar navbar-expand navbar-light navbar-top">
+                <div class="collapse navbar-collapse" id="navbarText2">
+                    <ol class="navbar-nav mr-auto breadcrumb">
+                        <li class="breadcrumb-item"><div>My oscar report</div></li>
+                        <li class="breadcrumb-item">
+                            <select id="view-selection" title="movies-plot" data-width="fit" onchange="location = this.value;" data-live-search-placeholder="Filter..." class="selectpicker" data-style="select-view" data-live-search="true">
+                                
+                                <option value="../oscars/index_1.html" data-content="oscars <span class='badge badge-light'>184 rows rows</span>">oscars</option>
+                                
+                                
+                                <option value="../movies/index_1.html" data-content="movies <span class='badge badge-light'>184 rows rows</span>">movies</option>
+                                
+                                <option value="../movies-plot/index_1.html" data-content="movies-plot ">movies-plot</option>
+                                
+                                <option value="../oscar-plot/index_1.html" data-content="oscar-plot ">oscar-plot</option>
+                                
+                            </select>
+                        </li>
+                    </ol>
+                </div>
+                <span class="pull-right">
+                    <button class="navbar-toggler" style="display: block !important;" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </span>
+            </nav>
+        </div>
+        <div class="container-fluid">
+            
+            <div class="row description-box">
+                <div class="col-md-12">
+                    <div class="collapse show" id="collapseDescription">
+                        <div class="card card-body description-card-body">
+                            <button id="close-description" type="button" data-toggle="collapse" data-target="#collapseDescription" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div id="innerDescription" data-markdown="All movies with its *runtime* and *ratings* plotted over *time*.
+"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center" id="vis-container">
+                    <div class="mt-auto mb-auto ml-auto mr-auto" id="vis"></div>
+                    <script>
+                        const specs = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A scatterplot showing movie ratings.",
+    "width": "container",
+    "height": 400,
+    "transform": [
+        {
+            "calculate": "parseInt(datum.Runtime)",
+            "as": "parsed_runtime"
+        }
+    ],
+    "mark": {
+        "type": "circle",
+        "opacity": 0.8,
+        "tooltip": {
+            "content": "data"
+        }
+    },
+    "encoding": {
+        "x": {
+            "field": "Year",
+            "type": "quantitative",
+            "scale": {
+                "zero": false
+            }
+        },
+        "size": {
+            "title": "Runtime",
+            "field": "parsed_runtime",
+            "type": "quantitative",
+            "scale": {
+                "zero": false
+            }
+        },
+        "y": {
+            "field": "imdbRating",
+            "type": "quantitative",
+            "scale": {
+                "zero": false
+            }
+        },
+        "href": {
+            "field": "link to oscar entry"
+        },
+        "color": {
+            "field": "Rated",
+            "type": "nominal"
+        }
+    }
+};
+                        
+                        const data = "᭠ᠭᠨ䁊Ӑ஠㘥ᩬ䠩⁷č疠孵栮ᙧn捖⊠䌡仨œ⥁昢ᢇ㼼ι堤歃僆揾ֻ1ⱊæ砡眃椲愀ېA⧼僡Ɱ禘ਡẌᵘɨ旐Аއ䀡ㇰŊိ湩怱䀲ǰኊ摈琤㩇;ݠେ⃑栤Řl杇㎠ຶᠹ仯•啉㳲琠ᣄ㭧․ᕰƙ標咮峼䁝ჸ慠挌歓ဠḠ素湻帠䢠ࠃ㫣磼᫫砠⼨඾༢ĠР㠡䳮㓨N䈠ᆶɛǅ䀡Ⲁϐへᙌ\"挦㧜ϰᶾ溶㠮λ&ୈgᘹǻउ㨦⒫⊀ຣٳ≘ʽ坨㊇㨠ٲ䒔桒⢥⢼ၜ․ࠠิ⩳ᑆ⁎㱬ᇡᲯ⹸历㩝ᆬ‹ۃӪㆻ暫㋵㚻嘡ת瀦店ϳ盙ỿ⿭眣秽⽸ⰸ烣㣲㚺昫ዥ㋔㘹Ⅸ狻僰᮹Ǳ摞⪷ເ*䘳૧ℼ璮䃪㏲ޖ毑Rအ新䣑㨮Ყ≱⢬⠸᳞僘⠽䖙ԇಠ刀ᴠ׋䤈9㈹⇡䓌◸㕡௣瓵缏࿮牛Ằၚᨩ㼀悀⡗穦䧜⽕╶泃㉙偧ᷭ䡄琠᳒䐆㉃琴ᑦが唊ᆻ㐓刄٥⣺ᴠ້⺙つᄧৄ㧎㴠䪈㩄禠歞埩寊ᮡ焜⻹⪊㮽燎泠ϩᑽ惊ň憰㉃䂐੻俸屧䈙偏䯈㪝⑊❱⪈┫ⵋⵕ仑㺛Ⲥʞ洊嵂␛ᐠڈ䤈ラ⒐ມ԰ᴥ䆦㰦怠⣓ࠀ☱ᗀ[䋢牭伆㰰❳㱗ᘄ籟Ȅ䀩ᕡ悺ᾡ桄ኴ墰䬱ョ䷵Ἀ匶拘久撯১ໄ⑶᪂䳴䪶䙱嬋ׯ₸䷂㋿䅡㩏剒йᙅ䒧ৡ䛡၁ѻ䞔▮䶶ӮἯ⃾䒠Ô©㥖Ỿ玊൳獜垽燖䳄ȁ乭䋸勳懰穾䮰ᘧ⇡ᰵ梎᭹㤁ηፁǵٜ⎠ᆁ㗣ᄈ⪹ʐ巾䠎䭈秹䓹᯺旒ô⓷⁢㛒ዙ቏備槻敱秿暄䕹妊垹珜⻦獡s犀✭Ꮮ䛐ᣦ಴㛲┶Ƕ瑹桰䁘嫨㨧拠翵呈ⴵ稦Ṵ㔌ౙ拤㒩ᝂⓤᝈⰡ䌽䅴畮⽒䗮㽖䘒䜾嚎淧∝թ嫖瀪囼㋍├矐㦄䲔㦜rǆ㑱ဳ堸慃䳍ᄼ槅䒹⨷䎶堹А๖䀦㻻焱㝄侱᧧東׽㉾⃣അ㙶ᢦ䙷㠴⛺囓羻⡜㮻⒉䃼ᨒ㙙䌕ᒷ㞈ധς-⹌呆╰偮⿣儲o悈㷧䋾\"绰٣䊕懇噎䕓⌅⭂熼惴瑽়冴䀎ዤ㮭┉ᘬ㉝恡䏭佐㣲៯⌍寞吡຾厾ᷧ磅䘹ഖρ䠮㕓௘墍᙭暖⍜䔻ᶜ庑姑嵽䲞搠改㜉⥀Ḉ΀⥇㱌ਦ凳稠Å䠳⁻㐺ͩㄳ㍵敠ჴК䨘⪮ࠩ妕祆㍄ᅔӦ㇢㩹擝竲畉乱Ɉ碠⓰慱嘶㨮䑯䃠懺昌䥒᳉Ƕ⯃䤤Đ眪瑧沈氤Ჴᕡ曄㤹ಕ嘪לࡥ䁺ુ梤䠨ἓ䮠㇎㎖潀暶㎬晗А㕠ࣿ䶹繊爮ᇡ䖇Ժ⃩㛻槣层岩䊑亹ᣏ⇗禋䙎㗭䩒ಠਸ̽ଙ▨؆⹥㈠ڰₘؖ攮㻈Ӹ缺咎ි⪹⪵ఴឍ吱ƀ䅧ؐᤤ㡔㷪䧒砻ᗵ兂吨泪䫠ᩔ唹砨Ὁ㝜䏂ɠ塬์歆ذ曁䄳熼࢙ड᯲㣖ͯ懾䐡扴ܬ࠼ᐴᥠᇍ毜௔㭯直垦ɚ䑜ि克ᰒಿ䇈אї⅑怷㔀ᱭၜ痩喙ච⎍Ⲭ㰰ڶࢮ䴋℄⦾磤ണ翛寗ᳬ䁍敌䤠㹡䈳硫尾ᕨ㭘䖊ۅ⹠䩼ᵮ笕భ簲ሉ෣Ⳋܼ儑卉䴬怸રกᐥሌ⁠⊎奠云ⳝથ⃨砼䮸捬㶂ԁ礼夲ᶆ᥮ႈ拯Ⳃ╁㝳焎࿆᷃殠ۇŠ悔滈䌉Ǽ氤䄸ƒੇខ㳬棈亡崊姳℩惨䁯ឆ቎╨㦵ၦກ嘵⑈⮪ܱ燱㢓䷁㮢ࢮ甐Պ߁沟௅㉔爂ぶ⊖㭌溫䓞〉㜧⃔D堤妀ূȰ⎻㠄₆҉ᴭ瓪慠硒拁≶ࠡ曀穅ⓤݩ䲱᦮̸泔塙㴷ۃ傴獔㋯ࠤ⺺磬夒徹剂儣⭒ˠጥ哹୨ဥ㆚䃓௩㊔㙅悅獠㊡桊眪⼩ⷽ❅㕈ᦆ䥂枷捭⁯་䖺ķ䣥ɲ怽ᵿ䭲楻娜㏡瞕ቤ㙦䣹ⷜ狪僤ࢠ⠠ΰᠻ匩᫤䍳䬘㹣ⵇƵ׮㌾ᘁ坜₮瀮匥狱梳Ƌ潉ⲳ憒Ȳ⭗午ɇࡆ掆㛡⬌泫漥够巛枤Ֆ皩䓸ුೈᲤ☐椫⯓ᙫ楐پ㘖⡗Ǡᰢ䤕ୠ䌬碴㪖猳य⸒­慶Ⱒ䁦ು䝍ሕ㫈⒛᪴研樼⯍㖸礇ᠲ׫箥┵浼吝㇪ᱽᎶ漯შáӷ琮᪆䱧ᐷン䳌垖♃䪫儠㼱琡ᩧ孚儆女啃䇪柵㕨峻梏竰䐷偃⁰㼱࡜䣀昬䢥৓咪㐆冋剃扑⏡籱ᴩ庄叜ㄠ佅奤㷐幷║ᯥ䕏挈㳀䄽欹౹懾㩎䛘䢈ᴡ桻ீᚨᵒ㎊ⷃ߶ᴩ塍ᄈᅇᢄޤ㺩山׵䙁䇴烁㬒ı䕽嵎㓴ᚄ県曹⼬叽䧮⌓ၭ᪗皌ᬘ䶺摒ҹ䫬媲ʭ᾽保ȅ㪚䏀Ҏ䑵䄂⠫噽Ꭱ棳⽂淍㛻 棗㑫喇泫ⓕ௓洆存෠㛁⺋པ㜉悹墫憴ͣ˵䊼䛼ڈ朻䧗䎿ᦵܧᓆ仭ߖ໤㪒沌桻ᮤᏦ埽㕺碸㖪䐪䋴峒䉼ݐᒢℒौ䔒㳞等ሪ⍥穋撌㰱㣓奂悰拡↮㻉幎䬱⎎纱ⵥ婃਽ᮻ羄櫕ࣔ惖ಊ幌⋥䭣忽ܤ婽ᢩ䃩ហ呗ೃ囊㨃௳㱔៙Ě䄷㬸爆幟梄㻍㶇传ޥ⟺䎪䄳؟䏏歆ِਔ᯴᨝兿爳悴卉Ᏺޖ搽ご∢悗Ʈㄮ木糡墫䬪͟偍ሹ㑧怰ㄬ昧炘܊凔神䮚ᤉ捓B䆪㨑狎ďᬗ溄溳澎泌嘥牚䭧䗝⣣ୀٳħ✨綍杭ሦᙓ揳䝠෫䄕䌘⤴䟨憡欻ǫᡕ痙四൐ぼ⹄縶瓚㷦朝䷖㽬䁻љ㰧傽垖縠ĩ咠眹䭥咑俢䝫愜奠罆橠⯂ɔ勃㊔戶ᣑ▤㹆@䙍丬絘祋乬ᾎ塝揮卉䧈橮竭卨எs⢖Ṍଁݗ壕倕፩孕⯵๤欂䝶⊂଱㾪Ⱳলᥡ璦恠ࡃh䉡て㪽丁䪋穹删復冈⒔䃟ȡ榋·䦗嵨䮍დ⫯䙸広獼篪䎩ޏ簳㌤ᰉ壃♤䯳ᥢ࿈ᾃ㩇嚨牂悿㪼噀࿏䱮煊ᘅ怣╮懛࡝⺄㜤磋买⮬䩉䮏ј㬪傀㍬䯍拧⍍䮑}俪᪈ǩᏔ瞩㉺䭦儅䕍ὶץ姡㢌䬥榵䲣佮暇䇟࠙橮ދ⡐⨽繢॰ଈ⾁ᣆब䚷ᰑᄠ倧处⊠娥㵕䪘䶜殣压炑妱䔌䩌⨮奣杋␲懘෵ǎ⁅ወㇹ男㍵楡uശ獧֤㆐嫍㠽⭈⑽殯杹䞃䒔簡䐧ࢀⅤ܆硂䔫ಜ瞡厙⫴叠≫㩇礋䘈㬰ྗ䚢奣䭦ॐ㡽䶉᠆ࡤ͹Ĕ砨恩種ᨔ⮪ᨱ棄ᐭ浩偍᤼⑃䬏፥扮奭᜵᣼ˬ⨵ᢤⰲ憕䩠ฌ㽍䜠᭢㵊呭欗ϐ勫࠷㫃᚝㗅䰶ԫౠǨ၇℧Ὀफ⒁ֱ徨䒮੮᤹କҿྂ⠀━ġḽ⩀䑑痭ⓠ✩丘ṏ┥娅佩〢ᣭ掫෠ऀ⓻䥤ㆬ㈳ᨽͬⅣ俩ᴯ⑀义ܠधڤ⒲к᰼娿ᛳ⟂ద䧰ᘸ㠃倰煐占⟦冚䡟凹吰敍₡᷐垧ѭ᯾౒柀㱃᎟䷱ᨫ橤氚㵳ⶌ厃䤴㺔㮌⒘焀Ԡ烊䑱䘼᷹㍨睹䓯侀煦⭍⭟ᭀ䯆污炆㍍挹咈✤⵲砺殚楴ឝ洉枃䡸䌵ຸ夗捏奣昼繫戮ᢼ彬媃᩠ሣ倰֋ዢ⠴⸌劖惖፣唳ᬸᇫ༌娃粒௪妑፫䨲Ā㙭澇ᳱ劾䀅〸䂱む䬤㤣㆏⟐⺕Ѣ攰䁁ᕕ㮹ྗǶՁⵡ Ÿঔċ熛ᧉᨀㆮ⮇瀷ᵘ獠婹䐷ࡀ଺㽲玚ት⺪▏挆▭籯⠪w᥸ধ徟懑傍庲᱋ࢼ啳㠿糟檤䴡俏啯䐑庍ᵅ呍奦ᙉ吊⋜Ꮮ䐱ຢॐ㧰⧂䐄烙↜ᐅ翠砬㏀ᛥ搡䐢ㅐ቉栣䣂Бࠐ喯庅愅峭䀩➁ᢊݼ秋穜ᇚ㦰ੂ֙㢢8䉯抋炡亠娡挬慑᮸䩶⭍䧀ᓫု£䤄䊝⃦炐マղ㩼㢠栀㾵ါㄼ祲䯘㵊癇叓༓❊ޏ✼ṑ䢦Ὡ㢭䅡奅᝚ɫᜅ摵ଽ橩嬀渋⥦䉍ુخ䄐⠎ມ侅⁑ዼ፸≷糦Իލ欎江䊵ธ涮䳱᭘ӌ味嵯䩜ȀᏮ穮墖䬠㷊╡ሚᐒ㡦⋻䒢Ѽᖻᴑᖁᐼ徫‸㐑࿸娫㨳ᐼ⎔⚽沙嘱♈௏決₈ᜰ溬倭ᤀᤕ▫罷⎘ઠ↩⌢ˈ᷁桪䢠埂䘊扲嬊アᶄ冠兀䅢䈂㾠哵ŐʊҢR㣎宋㸄ጭ⁺㊰柆᪪·崠㵪琨獀๩嵮ᥝʷ֤࣮⺐旑匥ԥ䃿晣墝㑮গ䜜ḉ㝄猡ଦ൜㯎䴢拐Ⳍ⎫㘨帀瓆礥ᒧ䥕奣嚬か㧂䫷Ŗ䜲ᘸ㻭ⱌİຊ勧㛕㐻㜭堽徘ↄ㢂媾岺撜Ս䀭䭦⠩䍰׀ࢽ灱奸帥欎坆䈴₧搼䑷Հ僲䁦壁呫䭿牐媣⃻ᣉ䉙㝳᩸㥡笜㬡Უᬀڷ䫰㓬殂Ҁ撼ú文ᢵ內Ḽ䐧ᛱ抹⴩潪橒櫲Ơ温恩簅⢳⽺夹ㆊ⏼Ⲳᴍ㢖ᵒ倎曙瓮ズ◾㥍愓⛌㰨䑬⦷⋹䏂〰ⅈカ勠嶐㞛㖱Ϊ㡜⨊䬀㜡嫻᭟䳉缊ጣ䏵ೃ眣╾⚼怛咧杋痄ద㺋禀ᕾ♵⵾ᙖɚ姴᏿⑉Ɗ傥櫤䊈ᣑ憿定獬ཊӼ⻺ႍ䋊₳ᬽ㣧⫻椠㢞☌๐妭ᨾ冷࿴ᙺ̪ࡴ⢨᜾滈෬䖑཯氱欈̠ᘫ抎嚰旂煍ⳗ䍘ሬ敯焊坡䍍弊劕㗶䚙䲬㡖Ĳ䀵䫮ನ⋺㱹䐧沕⊢婧໱塭⡀䭐筼⛭䩼⁦歼瘺ࠗᇹ娷绸䊤偈䉔璂怰കⓎቯሾ䳡咮籎柰摼䕠捺䨠䢠柅ⱪ揑㳘娥厚晍ㅻ穳㇯✈捩༬᳊כ௥᪯໾恍㚲⠶╜¿僇ⰹṬ䉈䫧㥐ઊ㋳ᄪ㩔㳤ᤪ㝍˭瑁ጂഔ㾯意ͷτΰ㡭畗㷧奐盖䰧㑭㗄⌐癠ᯱ炬Ⲏሥ妲刳r獠᰸䒏偦䋓嘠ᱡ换䂊伋㽭䲙Ԉ欨戄曾䦮㈈ᬋ刾̺ۍⵧ䆢✸稑绁㋲⣵䛑᪅妲ψ幧䅵ǩ欦e።䴧伪ゑʷ岙三㔂Ũ␬ㆰ╱橪療歴㴶✸ಯռ懵旣䁬ࡰጊ罽彵ǣ團䑋娗㈙⠥瑜೐↷◬ຯ૝䍫ጴ⹦❖▒㉤滪屲᯶ᷠ䁇⮚↥⬇䆵徂⸵㗌煬㥘匛㍉灮效๾ോ勍ࠤௗϣ淊⹠え¹删滑६泉娽ȧ㋞嗳法穧⍍奷ᖷ絾睌琼牟燉㇗֓綢䑸Ν㣩䱶㶝婶劝汹㫫嬶ͬᱪ倠慑᠍橧砹ᛜ䟪᪢䬜䘴坊ፋ⒬⁶䳒㖺ն⤋㛔昈琰ಚ憛繦碫═ŵ∌҉簝⏑䳸㕹嫺瀀⥴ಌ搐欹㑺抇掰ػⓏ惊慤Ꭱ皾佱剪瞠仏抃࠰ႛ矻咝⺡ⴥ焁‮ាペ䭳ᇘਠ痖ҡ惖⌭᣻Ⲿ剕ז͗樸䌻僿ႌ柋〯⁊忶䂬࠮熫媒䗼㶭䌒⡗㽯ࡁ澃叡䨧ሦ憾呇㱀Ḙ亍䲢忤࣯瓵ߜ痗建ዥᱼ㯘䈖咂Ή⇇ᙀ楆᛽緞佃ᝨ伬⿛模ᅤૅ畚淰‸✽㵼撖燍㙫㔿䘕س垀ᘻ旒稚ㄖ㥙䗸䌴ଙ暱浪ᥜ⥘䆂旬古ஓ޶悚䄇喨娬䝾ぴⰀཎᗐ╜䛷❇䎄嘒穈ౙ㲃ऑᮩ籧㱎喈ࣩ咫ᩁ滫Ⴁҙ恮Ђ₨筴șయ呮୞Ꮧ畧㏧㸴划卬竀戯恻㪁沦犩䙒箮䨧曪⌷⥢Ს梮኉】ፏᾯ淺ょⰈ塦Ű祭ʙ杅帜汿උྐྵȴῆ浴䄠ᇡས៫㪁揯樥挷Ʒ嫔爹⨀⿉Ồ灷ѐ濚ⱒϠ୬禈㌊労ⷥ⚹䴙ᗲ䟐ጳ庠ὸ綁ŷ滋်林恺偹登ἇ樄纡ᲁ஄粨㾞ᅄᦡ䌫⥂⅚䒂డ橑˚ᇫ乲㐁矋㬁᫾ࡥ巧㵨眭❗劊ణ∀冟疝䰈癈⁚♂⎃爪൦䌄嘺ࣺⰩ⮉晑᫑寃涍绊ⳅᦗ棦ཱྀᮀ凴寭䀽梕䶥媤䇇線⟗㡠榰䴗処⑹⢵䌡⁚❌ᒙ冋ࢋ仼ђ礖Ꮮ徃屩惦抮ᙫ☹慢䳏ᒖỹ᛿㷏懶၍憵㬻ᔂ䊙吁ዼ䀌᭧┙፲㶂ⱡ♍曠寊怱⮺槬⺴ⵘ綣㳝䔔䴮ʂ絵ᰃ῀ॎ揲㾃富ᎂ琵涕㿴梻塌䄍䁚埦Õ䰞缾浟ᚯ䏋㣾ᵀ癀㶍㫭樾娋㠿岡ຕ☒㷊䑅ㆫㇿ冯೯灼瘞ኳ摯ଏရ㶁ᒚ欕▯攐熏䃰᎟ٹ強猃⿱爱ٍ䝿㛾怀↜䨝半籓Ꮓ䡜㹌磨ļ䉤摋壯₨巹碹⤲ằ⨥盡ኈᓐ嗩䅌䟈兦樷墵槛簁涾㓀∖๐斈彚㇅᪞⿔䧻ụ濴氯㏤̈ખ硐䪇絑䋖ഴ爓௴㼰嵻Ȓ䱤ኺ㎄⴮ᒦ⫥๾㱽淵䡙〠ѳ䈿恙㧪⊰4ୈ横ၗ弗欝掍㵑┗ຼ䃰৵ԩ಼㼃ᧅொ式⇡ǀ౐字涹㬤䡢Țᳲ槺捌仈⚤㡭⛘Ỡ㶱涿ぐ 䞌䤡ⷛ₌ኲ㑁ͬ♺⥜䎰䀤ི䵔ፖ䭼ᕓ䷪ၗừ䋶搨༈ḱ䖸㼲⸐ႁ䖢䱱ࢪ➩壌叼橯ኤ緑⡴᝗䱔៚θک斮厰悩ବۇⰬ〷䃤Ɑ緗甾ኘち歯翃繳祅∠偽Ƴ䘫⥫ԧₐ⪡礸澧ᓙ㑈欀䛲ῴ攂㾣㩷͖処ྖୈ噇ⱇࠬƉ滋⟠磇㬨戹䧲䕐╶㿰ઃ㴧⌍憴䔣㇨刯⧺白©ڣ䃎朥ǥ纤ǫ况ࡥ⥥㥤ʥ硸ち㓄ɦ耛恢孄纩⎼䏐ち理䘺☾峬උ࿆क़䮪瑍䀼Ⱁ൛ሀ椫౦礸ᤞ揅മ嵡斯㎪⃄切⭢ڸ渠₰⸱㤭猉弰㧰㎧填Ⅶ愫敀䜀崡䩩瀳哒㋁ౘ瞥⎪侢泖孒䝪㞩瀄慨夶ࣷ㉒²嬣碬悟灋࢚䝸௸䂬竤उ備䘤Ӹ㱐畣摇勩爼⽀攝碥㈻煠塹ᙓ帀䳺ᬄ◃䃕儊䞏ɢ粢䍡剎凤䓌Ҡ⨡〹ᥔ⇌䗇ͪᬜ爠〲်ᠬ⒐ὐ䘻瘠ᇑ⡷ȧ䜌ṍ帓⤼癥緧㓛Ϊǰౣ晁恢秥䅾ᳱ努疿ౄㄨ䆤䆪緙癫䅛ℙ䎮䑈禢⛦⚿斐悹䃓቎監卅楍⨲㍡࿧Ỡ桦ᰰᑛ⏁╰ᾖะᐫ^⣉၆֠ᆁ㞒䐹梳焒Ⴠዐ封㔂籏烦䉄౸垠቗㐷⥳巅䐱倱㬚䀰㢐䒴祠ጓᬕἣ⡺㸡炈燺ᛀ嚳䬬䀧ࡆ॰ݐ䬄ℒᔮႱ絺拍夁Łᵠ‰䊈玆౷⧠㝕浭屐妧ᗕ䐺　਴摿刓䖊ᘲฉ夂䍴た惖㗑ᥖ壉お回曎䏱⨻ա喧ᳱ䕎ႁⓐᙒ嬣缼屚漁䍼╒઼ᄱ幩牒䶵瑷䮸◐⧢㋊䣶㈯ฤ㾙毀叽斍⁴䘏፡熥太敍ᄚ䩅ࡨྫྷ䏣䬯ࣄ沙兴倸ᬒΠቛ击塷掮㿽㕄垰଺处咑㉛ᘾ㯁悸䥭೰祃坥橘F⥕枘ൌ䞁禍౑悶剾氠琂ಲᷦ᥇ᓐЍ៰㲱嵦䀷ᚧ挿੨Ს᭐倥o攞ʏ䆊军房䃇ຈ灥䅥㢁埖碧ҭ㥟厑䶐㽉⥈渥㴕熸Ӿ߃炶㸹ຂ㢛঱ᔨ䱃ދᲞ憟効殶⟡桥䕞佴哺䞮ἲŁ㸊桍〤扬旁e妅ī⢉˺㚞ච䐉懮␻呰࣫䡌ဵī祀稤◑眙᧤㏰㭩㑺᲻䡭䯘ἅ⡤ṩ夕碈升ఘ奈ᾆᄾ⦰ˈ䶽㌠᱅㭹ㆊѦᝐରↁ⸬笉⭶–㵀媆兢ᔀ⏎䙈֐៱፩Ⓓ㔁䃿ⵄ利€䝫Ҽ泪䑻ಒ⟩棈堰䣜‸捶㝸䞖╬๹࠹噺ᾉᴫ㚴ኍࣽ҉ΐ͕甩㉝屸夔炠ச᠒㰉呏䓳ݼٝᐼඡ❮␬䶢‶ɮ䅇殈ځᄆ▄Ʈ㉨♫㰮Ց厫Έॐ勡Ъ倾↚䛾⼜⯨㸂缪㑦⡐䀵‘娨伷紶慺䡉ᇒᾃ㗥㩣擓䥠⇲⡠㷀⿯ᾥ㠯㐍䲈㘵瓫眥䳨ჹ匧ᔺ㢑ἁ皠㤈ᄀ濄㙴㖳ᶻ灅⸌瞠ଊ繃硁䁂惝℃ᖧᰩ符ᲠⱿ凒䁂⇘眂㹤濈䱒戯梉ה田᪼᣻䁆ᖱၾ䊙⼬倱㉙ሼ䲮㦳椃籝岅儖做㮹喳⌦怭ソ偄Àǰ否⎩䑡ㅏᐒ㼮ⳅタ楕⋪篋Ⲽ庩ࡁ໺塣Űᘋ҂渻堂ᙌ㔑厧ᛀ⛐㪕絓泰ℚ㊺ᖐᾳ矯㰠ᚙ⨻惸変哄斠♃ᷩ悈䥔矢ỉ桨ᓺ⩷ᜲ③彆䡣ᮀ唖坖௡ᾨ琢ၐ偑䧡໑㉔ҶݓҀ昇枏娄㳇㰅䬢璺搟ਪ⇝䖑⭳洉ㄛƷ໬䟀粎碷ᦄ䜃ឌ呉ᶇ俧ᢧ夎捶ᄱ㊺୨溪瑅⪌⼨ޡ汲☵偯䐞䨡㶘᩠ኧ䉔♅㡅ਲ✘峧⨱▝䃆䇝ྰ囂是ф䪈↳䮔殢横ষ␠簻杌੒㦥ጣ㙢⹸᜴ചᠰ䫒Ƞ㼩᷆䎘㾢硳砮ಢ⁸٭ළᨰ䓬做扙䦂䇜䚦ⶒ咎炊⨶˴৺ム擃县儻䱆䂵呠ᰣ犫琬扜ϕ৴ケ憄痽ṧ⁁烒⺑Ẇ挤㗇祿ゼδँ㼅⡜㤮恻ŉ倌磑斫␣⑩఑Ơ潹ᾡ䘴䋚椄☣堈抚₁ጶ煗㦘ܼ㵭)漻擦磈В✤䷀ほ㙶פ⟁ᇩ̫ąᓯ憔¿ٸຸ窻綌熄⧋ᎃနれ搁嗸墔⇹ธ䧠൱燭㾴〽戍ⵔģ羣ᘴ妄Ǒн໡ᦫ㻢䲠᳃ӡᏻ΄嵵㐵ၩ᳄৆Ṁ⃥㇣⢏恹ː♚ᾀ䨱䡦ᒜ獶䈨➖筘ྂ沅䧍ㄤȸ桼笶偨ྛ猥䎁徢ᎇଠ椽ま楆䝁࣒翑䘶僠䯄䧝°䜙๶ཞ焔☆涵ᅩ屎⁚ᑩ牾⅔䎲倉羠傐ᕰ匸䢠ᵅ▦ᶠ嶛䩼ⶉ㷹ᗣ๰䲔栯ଇፁ❒ἡ䬢ല僣আ卡缫ᶡ唣☩㏗܂煪㱏䨭㊟ˀᎡ僙今▥翜哵䌃ਸ਼ԣ澣泓਺牄⣌䀐嬠܋熈䥀䭵⿲୕᧕঳㈿㢋侂嘸寡㏡㚈㛗䝡欠ᑐョ縦塎੃坞䡐㣂Ըũ▢咠宲簡㹮滧勃䧽䛬༥相ᝢ᰹˴烴启ᬉ泠ᕓஊᖲ䌀ㆬ㘒䄫懍䦝⤯汱㿱न䍤Ѣᘛуౠ矧䤩恇ప箠ɋ◕ᦵ椺䙓ఞᙉẜױ羶⯓╛◤䄾ቫ࢒祁序Ⱂ⸕㟔䰳庾瘮䱚毆忊䗫⎦䉱⍻劀敎㠾⟧᭰ټԑ⁴∴杤✦沴ݝ╽䭅䎙⵻=䥦V䫃ᚳ㊠ᣯ‪噃桬䋆㳨⼃㰀ۉ嬝燛ϩ⊩䙳ᦿ紭珂搽㻥璫ᅵ宫⻫䏁Μࢱ簧奴塥゗拀 庘ぉ奓ʄ૛࢘癲樱䛐ᦋ䃽掝ሦ㞨㱁嫏乐ʖ侂㦂㖇椡ృნ爫ެ绣⪏Ⓞ岓ݩ̲攐㯏≷䤻傷⎆䐘滹Ȃ暜峔扈ទ㞹䢏恺灱傘Ѡ4䷢栢斸⒑ᝯ亼㈰Ҡ缿塛塔۟ኖ匂剮噍棪碇敲䗕㟲瘮棉擼䬝⟦῵媅ᵒ⩿䮄庩㇠䌓椷汈撹Ø㊜粩檰੧⪍⦕⛕܈Ჶ矹⽸搊䗍෕塃־瓂☜㙜延ᓵ▢毲䡌Ǫ᠞ῐ̆ए夯╟ல䠤羀喀栬٤䔰ܹང峡䝤崾ଛੴ弴䡒᫑漶朽H䤬᳑奂ᠮ垹亞㒘ⳅࡈMዅ勝࣢→婤㘛ᵴ㎕瘼㐤廬❐ഷ湰瀵䈲⾘帄璐嶽泗稈Ȃᙍ੔ഁ䙿䆞僶Ԝ䥙㝴ս㡀⣑碼埦Ѽⷱ敕䆂㥮ȚⰒ㵀ኤ猪亢箉ᅜ㽊⣈灤ࢆ咅⑉㜰㓤㌵䲃礩㕚䒄䋒㟑䳿湟㉊䏘°ೖ猊䩶⻎䧣♺㹼粌ᳮ࢙〰œ㙕⛋䵈և⹭ڳኤ᫩ࡄ愨⬨ȍ㇚↡᪷഍盆䬌枇欱⠀忒⥸二઀ㄵ⛉延湶恏模拚⥸˄仃๔孔㦆䃼㦾໵䋳暒㲠禒⌦૽ጯ䣽圚ө⬋⥢妒䓡Ꮌ㖍♂戵⠜穪炦傅ㆸ߯䛙Ȥ無瀴ဴジ䍤惰ᩒ⟲瓠䗪㜫䈖嫁斡ד<ⅎ拉㼅ᡠ佗活樛惋㓸ۃㅧ癚ㅼ歆檴筰ः冭ၼ䁭盬ᵪ绉凲䍤ュᠼ✦ᡝᇏ㴽ኲŋׄظ㽱⭦妩႞͍器ዠ埅᰽ᘠ屚榍⧺柶އ㊁樨ኬ喂㸈Ⳍӟ拏ᯕҚఢᓈⱴ㭝Ⲏ兴ᴼ桀۲ㄨം՗⠪回֖㫻ᇙ搸⬞᠘¤畑ǧዎ檝Ⱬ㠴䧴὿ຶ䷵अ䲢ὔ璔୸ⵘᅥ嚇ᚶ⦉佣ᚼ樸⌖ת榴ᡠ均㚴⩂ᗘậీศ寒䘹㋟䦶ϐ恀愹沖熎Ϟ奬绥⡃╆⃀࿩勪佨而桁箈၊溞䏢棄峦គ窞ᡍ⪭⅋Ȭ擿ゎ⬼Í团ᷱ䷪琲楼xš猄缇筇夕啍凣୸枢ࢠⵝ㖤∯හᬘ且ᄥ堳䆧ሏ۬瓫ം吢櫯档ᱭᑭ䀱溦絁熌▌䦰ἠᠩⰢ䎣㈴⸐⏒䜬悏≭╏牘ܕ​呱傝䱸撜ེ䩴㰧瀨妚䁘朊塐㰶搰Ნ疸៪ɜ㦧砍樰㠦ප愫嗸桀㿋㶴稐敿ְ⇈慆簠ڳ䥢⑴㖣㑂≗卺㙐ᛒ噺悸ᙂ㷴Ⴧ実⫑ᢼ᱂Ϲ簾ᒿ✌Ĉ㽍孥ᆩ䁱ᩧ₋᛼䤙䳋䁑䠫䢹೛㌡囊眧䜻ᦲᧇ壌簉䑖秓ऄΓ械ㆁ榨榱ạ᪢⒨愉䲣㱲ᾗ䛁ႩᏧ➂䞨҇㆖撺ⶆ❈䐖⾋䡇擟媼䑬紭孥刺ႁ䅒䲉䑙嶧⯰嶚砲⧡僬煺凎潵㲳淎ᗹ㺅⠺ʣ孕䳑⑵徂⺄⪍ㄪ剡䜌傕㨴ஔ桬忘盖煗戹㞦杆硸9奼ྏ⮚䠥俉䩖⢑晷┐␃䭕䘭照竿⽢ᖣ䵱㉚㎑⫬灃䍢ጴфυ擗ㇷ▽㙪㷖縫ె噈媤临濚⚂绒㱖Ƹࣕ⦰㟇ⶻ㋊㨬䭪᝕ᤉˡ㢝欑ᦎ䖐♽堶䷇ॾഛᔙ䙀。㖦統✾ٛ¨⎤カ纉ⓟ㯤ँ爸圽㢍㊋汷␖㈩㙖ό๭〼⊶ٕᠸ㺑᪒徘稷ඛⲂ秋㛹㔌南匨⼇ᏽ䖧䱚婈憄᳴央眺䘱撩剚෤伜畳枴ᝎ⪜䥂㎴㗶殙↎哯ἐ䆕临ܴⰡ⩣Ē槡咴溋㵲ᔉ䩞᝕某ᇕ犹⒑汻⟼㗣ჴ㰊烪ᄻ㣿ƃฐ㴺⎢ⶻ⑬ၗㆅ㣴櫈噗羕Ǻ₠㈹ᕕ匑籠狑厑̟ᠶ渲秊涤栱㕆㜢⦕֒䱥殍䡹⭲ᷝ漰ㅱ泞⎍㖲㬺䦣搑ุᕛ䶯ᨉ䨀㫲᭚в瘋ᩝᏤⴠ⽮䶦啅㴻嚣ࡅ㶣⨢䲞科惎ᚰ䗐漾ᵕ❗普啁⋢掣求羏痉ᔥೀḦ斦䳄执ḍᘺю個籌㕛㸃ӧ瀎䩥⺓❗恂旇㍝ࡘᖂᠩዌ㹷情⸘ᗅ⥇瀺戓爤牊ᴍㆮṱ⇔ᦀ䣓⫗ⴒೊ櫽䞔祝䖉ހ廰ᆯ㓓搋戞恌ϱ焻斻⇇崟皋怘㱳ṳ揙㕋ฌ⦆ᚱ煩䙞⻽ᖇ濼搥㏲⡛簤湆⏢׆Ҹ᩻Ľ䴑灹⯸亴凩奲稧㢅禞墠攺❗ဩっဦ熖Ḉ䠴丶㵕ೢ␀Ɠூ石溕◌ၐἝ儀ଖ➹ʊ⍚垆淅⿢㫒紼ᵌみ╱ᩥ佂峘皉䬟慷卞䶛⩹ੈ稨䫩⑪汞綢ㆢ⢶⥆䮗摆ի嫧↔暠甂杓吼羊ȩ啙壴⓴亨ⵀ廉竘੔㣴器ف߳ڥՉ䡜₿ؼ⌲ߎ〹奂曠挲ܒ檐篭傿汯䩤¹¡柅杌嚖♎皞ဖ஁炥槉庲⪲㕅䋷氉盋㮅囲徴ҕ䬐吧䆼桸ˢ̰ᰧ㑕≆児挬匧Ⴥ䃲⏵◃乢ⴓᷚ晈尸俤侒紷ൃ僨妊〇椤Ṡ䏇Ȳϝ窑䶡歎篴ઘཌ卉㺪旂᚞筀杊㣐伷ಲ╧篹䪂֕㤱盈喍獈㗊慙悹忷激♬偄暓ܭḢ柎尧歭乨ሏՀ㑇䌫‪ታ㚸✴㻣⌤妬叛㜗⋂敝〈ᩭ掄䟳䕒√櫶窠匏哕㤭桌ฝ✥ΰᐴ吮䋿䪴ᆌӸ涭ᣋぱ⣂屵➼Ƅ楝䔞悺א嶏Ὀ恉リ嚲䍭ሠ羠埿䋕⥃癚䷼祵l偻Ć⮝⢼㌠⒨翾㕫ඦ嶭㣭絳ᖱ炋壪秠᦬⸹⾾㹍ൃ燫ໃ᭜Ḱ㇖ᔧ尊䍘㙥㶢䱒䶇☿冮啼࿝㉢浍࠹瓌✶௓Ε⎱൑汀䗳ᄐ偸影榆Ì䖘砌ʐ⩘䃿探弯Թ⁪㙘䙍b␾:㟘杖ᨇ烹᫥㗿㸖ݑᛔ㲔抣ᙟ⻤䏩㦯㦐ᵦᒩ⭃㙱⻦㍶ॳ櫮䋁Ɠ⠺州䆽⻣㳒е慨䨀刮䄨㷿3ऑᓦӊ冱憴濷嚙㱚猌䜽㑂ᥨ朓綡伻㩘Ṉ搰䥓子抢ዒ惊殯攤䯑㔁⃚䫴͹僦咬熬޹࠾罤䗤噏䁑᯽暌ᯩᱹ笒榊㑿䃞䇜埭瘊⫈瘸槯䊫➖↰ȣẰ㎄䅘ݩ妁玳盫㖗⢵䎀ثප೏喉疿津㔼ާ㉈࢟塄䱊⿪࿷Ε呙妷㼎䤄⪓ຍ䓂㹫焗悀殜䇇㏌త爻ഽ瞈⺪矻䞴眆ᩚࡁቯÑ泭⛵翄匰旚搢ᛍ医ᘼ婆ᷩ凍䢴㹕旹⇔᳔ㅆ䓦ᮕᵚ〨㵰ⱆ℩༠㸐ᐣ竊㶛悞ᓦ䊑ᔍỳ⼃ߧ⏧௄籞䴻䄢ƈ壃᝚丢∬屫ᚅ㧃လⲀ⸲䔇䴛糫犂൘Მ娶嚹歫澊হ┇㪥灟㎮仗忾懾爛燯䈃ⅽ⹦ʐ㇠碀ْ珣䫡査ీୋಏ⭍æ❛淈⌗扺ҟ㍧⌧䡅㥠ᡛ㪫伨沚ឩਇ㴩㡔榫澋⪌仧㾀抡䁬傪ࠦ喴䊓燯懂峎Ƙ⩻晹懴欁畐停缕䈓懓煚ᆗ♭塘ᡡᘰ⦕䚙♧ㇲ畋䋎ͬ匩ئ䫏e䅑噲棇Ŕ緃嬯㈑⪌䲐᥹⛐୺౸⿪兖廽ࠄ榐獟⵩Ꮜቬ灡梽ビ佊䦈ʣↇ喱䠉J䟍ቀਘ≗䐯➑෢㵭帠ᘧと⪌˩ݚ师䨨ɱ㍢⬜Ꮋ煬⪴峾壪叀E焰ᩣ䇴敨剏䉐ðᘡ吿琬ℼ戽䩈纜嫱煭㶠᩿慵⪱磢禂䦕ᦰᘒᄛ㪠㐐崬剨✃ၨ▌磄仕㬈⫇䆽ᑩ嬜ᇱ⟍纟ฤ䐟⌶⿂糞䔝壋⺈㱾檷䡀嬩䝩湙濼磄禆ข十洘嘑掱ᕙ箠䁗⥒ Ź缡抩䢵䋸 ⏠§㷸ါୣ垑የ὞Ꭳ怍低䏵䪊䄘忍♼楻䄫傡ㄈ͝ছ疌䘳䇤增燴๐徣㻜沃⮬ᱭ垽戫渥坌奺ᬭኬ⼉筑熂攆ᶮḼݒ៛眡夓夫伢潫弐炂㛲䈦㭑೫䟹䣅䌷潒ݍየᐖ⼶䞯泯廡⚝峚癠碢໬㊫㉊勨暹パౡᵡ婮㩻㒳㐆□柾⩢㉭䍡憃寢䚉  ";
+                        datavzrd.load_plot(specs, data, false);
+                        
+                        
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Error when calling custom function for column <b id="error-column"></b> (please fix the function definition in the datavzrd config):</p>
+                    <pre id="error-modal-text"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <nav class="navbar navbar-expand navbar-light navbar-top">
+            <a class="navbar-brand" href="#">datavzrd</a>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/datavzrd/datavzrd/blob/master/CHANGELOG.md">2.45.1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/datavzrd/datavzrd">github</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                        created Mon Jan  6 13:17:01 2025
+                    </span>
+            </div>
+        </nav>
+    </footer>
+</div>
+</body>
+</html>
